@@ -1,79 +1,122 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Search, Filter, MapPin, DollarSign } from 'lucide-react';
+import { Search, MapPin, Briefcase } from 'lucide-react';
+import { JobSeekerCard } from '@/components/JobSeekerCard';
+import { JobSeeker } from '@/types/jobSeeker';
 
 export const JobSearch = () => {
-  const [filters, setFilters] = useState({
-    jobType: '',
-    location: '',
-    salary: '',
-    experience: ''
-  });
+  const [jobSeekers, setJobSeekers] = useState<JobSeeker[]>([]);
+  const [searchLocation, setSearchLocation] = useState('');
+  const [searchWork, setSearchWork] = useState('');
+  const [filteredJobSeekers, setFilteredJobSeekers] = useState<JobSeeker[]>([]);
 
-  const activeFilters = Object.entries(filters).filter(([_, value]) => value !== '').length;
+  useEffect(() => {
+    // Load job seekers from localStorage
+    const savedJobSeekers = localStorage.getItem('jobSeekers');
+    if (savedJobSeekers) {
+      const parsedJobSeekers = JSON.parse(savedJobSeekers);
+      setJobSeekers(parsedJobSeekers);
+      setFilteredJobSeekers(parsedJobSeekers.slice(0, 6)); // Show only first 6 on home page
+    }
+  }, []);
+
+  useEffect(() => {
+    // Filter job seekers by location/ward and work category
+    let filtered = jobSeekers;
+
+    if (searchLocation) {
+      filtered = filtered.filter(seeker =>
+        seeker.location.toLowerCase().includes(searchLocation.toLowerCase()) ||
+        seeker.wardName.toLowerCase().includes(searchLocation.toLowerCase()) ||
+        seeker.wardNumber.toLowerCase().includes(searchLocation.toLowerCase())
+      );
+    }
+
+    if (searchWork && searchWork !== 'all') {
+      filtered = filtered.filter(seeker =>
+        seeker.workName.toLowerCase().includes(searchWork.toLowerCase())
+      );
+    }
+
+    setFilteredJobSeekers(filtered.slice(0, 6)); // Limit to 6 results on home page
+  }, [searchLocation, searchWork, jobSeekers]);
 
   return (
     <section className="py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Search & Filter Jobs</h2>
-          <p className="text-xl text-gray-600">Find the perfect opportunity with our advanced search</p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Find Workers</h2>
+          <p className="text-xl text-gray-600">Search for skilled workers in your area</p>
         </div>
 
+        {/* Search Section */}
         <div className="bg-gray-50 rounded-2xl p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div className="lg:col-span-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                <Input placeholder="Search jobs..." className="pl-10 h-12" />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative">
+              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Input
+                placeholder="Search by location, ward name or number..."
+                value={searchLocation}
+                onChange={(e) => setSearchLocation(e.target.value)}
+                className="pl-10 h-12"
+              />
             </div>
             
-            <Select value={filters.jobType} onValueChange={(value) => setFilters({...filters, jobType: value})}>
+            <Select value={searchWork} onValueChange={setSearchWork}>
               <SelectTrigger className="h-12">
-                <SelectValue placeholder="Job Type" />
+                <div className="flex items-center">
+                  <Briefcase className="mr-2 text-gray-400" size={20} />
+                  <SelectValue placeholder="Select work category..." />
+                </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="full-time">Full Time</SelectItem>
-                <SelectItem value="part-time">Part Time</SelectItem>
-                <SelectItem value="contract">Contract</SelectItem>
-                <SelectItem value="remote">Remote</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="driver">Driver</SelectItem>
+                <SelectItem value="plumber">Plumber</SelectItem>
+                <SelectItem value="maid">Maid</SelectItem>
+                <SelectItem value="nurse">Nurse</SelectItem>
+                <SelectItem value="carpenter">Carpenter</SelectItem>
+                <SelectItem value="tailor">Tailor</SelectItem>
+                <SelectItem value="electrician">Electrician</SelectItem>
+                <SelectItem value="cook">Cook</SelectItem>
+                <SelectItem value="gardener">Gardener</SelectItem>
+                <SelectItem value="security guard">Security Guard</SelectItem>
+                <SelectItem value="cleaner">Cleaner</SelectItem>
+                <SelectItem value="painter">Painter</SelectItem>
+                <SelectItem value="mechanic">Mechanic</SelectItem>
+                <SelectItem value="welder">Welder</SelectItem>
+                <SelectItem value="mason">Mason</SelectItem>
+                <SelectItem value="delivery boy">Delivery Boy</SelectItem>
               </SelectContent>
             </Select>
 
-            <Select value={filters.experience} onValueChange={(value) => setFilters({...filters, experience: value})}>
-              <SelectTrigger className="h-12">
-                <SelectValue placeholder="Experience" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="entry">Entry Level</SelectItem>
-                <SelectItem value="mid">Mid Level</SelectItem>
-                <SelectItem value="senior">Senior Level</SelectItem>
-                <SelectItem value="lead">Lead/Manager</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button className="h-12 bg-blue-600 hover:bg-blue-700">
-              <Filter className="mr-2" size={16} />
-              Filter {activeFilters > 0 && `(${activeFilters})`}
+            <Button className="h-12 bg-blue-600 hover:bg-blue-700" onClick={() => window.location.href = '/job-seekers'}>
+              <Search className="mr-2" size={16} />
+              View All Workers
             </Button>
           </div>
         </div>
 
-        {activeFilters > 0 && (
-          <div className="flex flex-wrap gap-2 mb-6">
-            <span className="text-gray-600">Active filters:</span>
-            {Object.entries(filters).map(([key, value]) => value && (
-              <Badge key={key} variant="secondary" className="cursor-pointer" onClick={() => setFilters({...filters, [key]: ''})}>
-                {value} ×
-              </Badge>
-            ))}
-            <Button variant="ghost" size="sm" onClick={() => setFilters({jobType: '', location: '', salary: '', experience: ''})}>
-              Clear all
+        {/* Results Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredJobSeekers.map((jobSeeker) => (
+            <JobSeekerCard key={jobSeeker.id} jobSeeker={jobSeeker} />
+          ))}
+        </div>
+
+        {filteredJobSeekers.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No workers found matching your search criteria.</p>
+          </div>
+        )}
+
+        {jobSeekers.length > 6 && (
+          <div className="text-center mt-8">
+            <Button onClick={() => window.location.href = '/job-seekers'} variant="outline" size="lg">
+              View All {jobSeekers.length} Workers
             </Button>
           </div>
         )}
