@@ -33,7 +33,7 @@ const JobSeekers = () => {
       );
     }
 
-    if (searchWork) {
+    if (searchWork && searchWork !== 'all') {
       filtered = filtered.filter(seeker =>
         seeker.workName.toLowerCase().includes(searchWork.toLowerCase())
       );
@@ -74,7 +74,7 @@ const JobSeekers = () => {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 <SelectItem value="driver">Driver</SelectItem>
                 <SelectItem value="plumber">Plumber</SelectItem>
                 <SelectItem value="maid">Maid</SelectItem>
