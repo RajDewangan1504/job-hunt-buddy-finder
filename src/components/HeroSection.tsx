@@ -10,14 +10,14 @@ export const HeroSection = () => {
       <div className="absolute inset-0 bg-black/20"></div>
       <div className="relative max-w-6xl mx-auto text-center">
         <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-          Find Your Dream Job
-          <span className="block text-yellow-300">Today</span>
+          Find Employees Easily To 
+          <span className="block text-yellow-300"> Make Your Work Easy</span>
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
           Connect with top employers and discover opportunities that match your skills and passion
         </p>
         
-        <div className="bg-white rounded-2xl p-6 shadow-2xl max-w-4xl mx-auto">
+        {/* <div className="bg-white rounded-2xl p-6 shadow-2xl max-w-4xl mx-auto">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -37,8 +37,8 @@ export const HeroSection = () => {
               Search Jobs
             </Button>
           </div>
-        </div>
-        
+        </div> */}
+{/*         
         <div className="mt-12 flex flex-wrap justify-center gap-4">
           <span className="text-blue-200">Popular searches:</span>
           {['Frontend Developer', 'Product Manager', 'Data Scientist', 'UX Designer'].map((term) => (
@@ -46,7 +46,7 @@ export const HeroSection = () => {
               {term}
             </button>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );
