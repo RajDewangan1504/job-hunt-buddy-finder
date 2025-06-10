@@ -64,7 +64,7 @@ export const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Phone</h4>
-                  <p className="text-gray-600">+91 9876543210</p>
+                  <p className="text-gray-600">+91 78059 *****</p>
                 </div>
               </div>
 
@@ -74,7 +74,7 @@ export const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Email</h4>
-                  <p className="text-gray-600">admin@jobportal.com</p>
+                  <p className="text-gray-600">rmczone03@gmail.com</p>
                 </div>
               </div>
 
@@ -84,7 +84,7 @@ export const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Address</h4>
-                  <p className="text-gray-600">123 Main Street, City, State 123456</p>
+                  <p className="text-gray-600">नगर पालिक निगम रायपुर , जोन क्रमांक 03 शंकर नगर रायपुर छत्तीसगढ़</p>
                 </div>
               </div>
             </div>

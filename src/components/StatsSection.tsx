@@ -4,10 +4,10 @@ import { Users, Briefcase, Building, TrendingUp } from 'lucide-react';
 
 export const StatsSection = () => {
   const stats = [
-    { icon: Briefcase, value: '50K+', label: 'Active Jobs' },
-    { icon: Building, value: '10K+', label: 'Companies' },
-    { icon: Users, value: '1M+', label: 'Job Seekers' },
-    { icon: TrendingUp, value: '95%', label: 'Success Rate' },
+    { icon: Briefcase, value: '30+', label: 'Active Jobs' },
+    { icon: Building, value: 'free', label: 'Employment cost' },
+    { icon: Users, value: '500', label: 'Job Seekers' },
+    { icon: TrendingUp, value: '90%', label: 'Success Rate' },
   ];
 
   return (

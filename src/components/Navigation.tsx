@@ -11,7 +11,7 @@ export const Navigation = () => {
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-2">
             <Briefcase className="text-blue-600" size={32} />
-            <span className="text-2xl font-bold text-gray-900">JobPortal</span>
+            <span className="text-2xl font-bold text-gray-900">रोज़गार मार्गदर्शन</span>
           </Link>
           
           <div className="flex items-center space-x-4">

@@ -12,7 +12,7 @@ export const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <Briefcase className="text-blue-400" size={32} />
-              <span className="text-2xl font-bold">JobPortal</span>
+              <span className="text-2xl font-bold">रोज़गार मार्गदर्शन</span>
             </div>
             <p className="text-gray-300 mb-4">
               Connecting skilled workers with opportunities in their local communities.
@@ -63,15 +63,15 @@ export const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
                 <Phone size={16} />
-                <span className="text-gray-300">+91 9876543210</span>
+                <span className="text-gray-300">+91 78059 *****</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={16} />
-                <span className="text-gray-300">admin@jobportal.com</span>
+                <span className="text-gray-300">rmczone03@gmail.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin size={16} />
-                <span className="text-gray-300">123 Main Street, City, State</span>
+                <span className="text-gray-300">नगर पालिक निगम रायपुर , जोन क्रमांक 03 शंकर नगर रायपुर छत्तीसगढ़</span>
               </div>
             </div>
           </div>
@@ -79,7 +79,7 @@ export const Footer = () => {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-300">
-            © 2024 JobPortal. All rights reserved. Connecting communities, creating opportunities.
+            © 2024 रोज़गार मार्गदर्शन. All rights reserved. Connecting communities, creating opportunities.
           </p>
         </div>
       </div>
