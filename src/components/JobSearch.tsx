@@ -140,7 +140,7 @@ export const JobSearch = () => {
         {jobSeekers.length > 6 && (
           <div className="text-center mt-8">
             <Button onClick={() => window.location.href = '/job-seekers'} variant="outline" size="lg">
-              View All {jobSeekers.length} Workers
+              View All {jobSeekers.length } Workers
             </Button>
           </div>
         )}

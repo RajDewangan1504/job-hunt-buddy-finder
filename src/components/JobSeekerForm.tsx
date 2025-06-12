@@ -55,103 +55,58 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
   }, [jobSeeker]);
 
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   const dataToSend = {
-  //     name: formData.name,
-  //     fatherOrHusbandName: formData.fatherOrHusbandName,
-  //     gender: formData.gender,
-  //     aadharNumber: formData.aadharNumber,
-  //     phone: formData.phone,
-  //     workCategory: formData.workCategory,
-  //     workExperience: formData.workExperience,
-  //     status: formData.status,
-  //     wardNumber: formData.wardNumber,
-  //     wardName: formData.wardName,
-  //     address: formData.address,
-  //     image: formData.image // Uncomment if you're uploading images separately and storing URLs
-  //   };
-
-  //   console.log('Data to send:', dataToSend);
-  //   try {
-  //     const response = await fetch('https://rojgar-margadarshan.onrender.com/api/v1/workers/add-worker', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(dataToSend),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`Failed to save: ${response.statusText}`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log('Saved successfully:', result);
-  //     alert('Job seeker saved successfully!');
-  //     onCancel(); // Optionally reset or close the form
-  //   } catch (error) {
-  //     console.error('Error saving job seeker:', error);
-  //     alert('Failed to save job seeker.');
-  //   }
-  // };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const dataToSend = {
-      name: formData.name,
-      fatherOrHusbandName: formData.fatherOrHusbandName,
-      gender: formData.gender,
-      aadharNumber: formData.aadharNumber,
-      phone: formData.phone,
-      workCategory: formData.workCategory,
-      workExperience: formData.workExperience,
-      status: formData.status,
-      wardNumber: formData.wardNumber,
-      wardName: formData.wardName,
-      address: formData.address,
-      image: formData.image,
-    };
-
-    try {
-      let response;
-
-      if (jobSeeker?.id) {
-        // EDITING —> PUT request
-        response = await fetch(`https://rojgar-margadarshan.onrender.com/api/v1/workers/update-worker/${jobSeeker.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dataToSend),
-        });
-      } else {
-        // CREATING —> POST request
-        response = await fetch('https://rojgar-margadarshan.onrender.com/api/v1/workers/add-worker', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dataToSend),
-        });
-      }
-
-      if (!response.ok) {
-        throw new Error(`Failed to save: ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      console.log('Saved successfully:', result);
-      alert(`Job seeker ${jobSeeker ? 'updated' : 'saved'} successfully!`);
-      onCancel();
-    } catch (error) {
-      console.error('Error saving job seeker:', error);
-      alert('Failed to save job seeker.');
-    }
+  const dataToSend = {
+    name: formData.name,
+    fatherOrHusbandName: formData.fatherOrHusbandName,
+    gender: formData.gender,
+    aadharNumber: formData.aadharNumber,
+    phone: formData.phone,
+    workCategory: formData.workCategory,
+    workExperience: formData.workExperience,
+    status: formData.status,
+    wardNumber: formData.wardNumber,
+    wardName: formData.wardName,
+    address: formData.address,
+    image: formData.image,
   };
+
+  try {
+    let response;
+
+    if (jobSeeker?.id) {
+      response = await fetch(`https://rojgar-margadarshan.onrender.com/api/v1/workers/update-worker/${jobSeeker.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataToSend),
+      });
+    } else {
+      response = await fetch('https://rojgar-margadarshan.onrender.com/api/v1/workers/add-worker', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataToSend),
+      });
+    }
+
+    const result = await response.json();
+    console.log('API response:', result);
+
+    if (!response.ok) {
+      throw new Error(result.message || 'Unknown error');
+    }
+
+    alert(`Job seeker ${jobSeeker ? 'updated' : 'saved'} successfully!`);
+    onCancel();
+  } catch (error: any) {
+    console.error('Error saving job seeker:', error);
+    alert(`Failed to save job seeker: ${error.message}`);
+  }
+};
+
 
 
   const handleChange = (field: string, value: string) => {

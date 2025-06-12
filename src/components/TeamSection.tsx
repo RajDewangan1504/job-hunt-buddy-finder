@@ -25,7 +25,7 @@ export const TeamSection = () => {
       const defaultTeam: TeamMember[] = [
         {
           id: '1',
-          name: 'जोन 03 कर्यालय',
+          name: 'जोन 03 कार्यालय',
           position: 'नगर पालिक निगम रायपुर',
           email: 'rmczone03@gmail.com',
           phone: '+91 78059 *****',
@@ -38,8 +38,8 @@ export const TeamSection = () => {
   }, []);
 
   return (
-    <section className="py-16 bg-white">
-      <div className="max-w-6xl mx-auto px-4">
+    <section className="py-16 bg-white flex ">
+      <div className="max-w-6xl mx-auto px-4 justify-center">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Team</h2>
           <p className="text-xl text-gray-600">
