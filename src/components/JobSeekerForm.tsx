@@ -1,56 +1,177 @@
 
+
+
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { JobSeeker } from '@/types/jobSeeker';
+import { CloudCog } from 'lucide-react';
+import { Console } from 'console';
 
 interface JobSeekerFormProps {
   jobSeeker?: JobSeeker | null;
-  onSave: (jobSeeker: Omit<JobSeeker, 'id' | 'createdAt'>) => void;
+  onSave: (jobSeeker: Omit<JobSeeker, 'id' | 'createdAt'> & { imageFile?: File | null }) => void;
   onCancel: () => void;
 }
 
 export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
     name: '',
-    fatherName: '',
-    location: '',
-    wardNumber: '',
+    fatherOrHusbandName: '',
+    address: '',
+    wardNumber: 1,
     wardName: '',
     gender: 'Male' as 'Male' | 'Female' | 'Other',
-    workName: '',
-    experience: '',
-    mobileNumber: '',
-    status: 'Available' as 'Available' | 'Booked',
+    workCategory: '',
+    workExperience: 1,
+    phone: '',
+    status: 'Available' as 'Available' | 'Unavailable',
+    image: '',
+    imageFile: null as File | null,
+    aadharNumber: '',
   });
 
   useEffect(() => {
     if (jobSeeker) {
       setFormData({
         name: jobSeeker.name,
-        fatherName: jobSeeker.fatherName,
-        location: jobSeeker.location,
+        fatherOrHusbandName: jobSeeker.fatherOrHusbandName,
+        address: jobSeeker.address,
         wardNumber: jobSeeker.wardNumber,
         wardName: jobSeeker.wardName,
         gender: jobSeeker.gender,
-        workName: jobSeeker.workName,
-        experience: jobSeeker.experience,
-        mobileNumber: jobSeeker.mobileNumber,
+        workCategory: jobSeeker.workCategory,
+        workExperience: jobSeeker.workExperience,
+        phone: jobSeeker.phone,
         status: jobSeeker.status,
+        image: jobSeeker.image || '',
+        imageFile: null,
+        aadharNumber: jobSeeker.aadharNumber || '',
       });
     }
   }, [jobSeeker]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   const dataToSend = {
+  //     name: formData.name,
+  //     fatherOrHusbandName: formData.fatherOrHusbandName,
+  //     gender: formData.gender,
+  //     aadharNumber: formData.aadharNumber,
+  //     phone: formData.phone,
+  //     workCategory: formData.workCategory,
+  //     workExperience: formData.workExperience,
+  //     status: formData.status,
+  //     wardNumber: formData.wardNumber,
+  //     wardName: formData.wardName,
+  //     address: formData.address,
+  //     image: formData.image // Uncomment if you're uploading images separately and storing URLs
+  //   };
+
+  //   console.log('Data to send:', dataToSend);
+  //   try {
+  //     const response = await fetch('https://rojgar-margadarshan.onrender.com/api/v1/workers/add-worker', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(dataToSend),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Failed to save: ${response.statusText}`);
+  //     }
+
+  //     const result = await response.json();
+  //     console.log('Saved successfully:', result);
+  //     alert('Job seeker saved successfully!');
+  //     onCancel(); // Optionally reset or close the form
+  //   } catch (error) {
+  //     console.error('Error saving job seeker:', error);
+  //     alert('Failed to save job seeker.');
+  //   }
+  // };
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+
+    const dataToSend = {
+      name: formData.name,
+      fatherOrHusbandName: formData.fatherOrHusbandName,
+      gender: formData.gender,
+      aadharNumber: formData.aadharNumber,
+      phone: formData.phone,
+      workCategory: formData.workCategory,
+      workExperience: formData.workExperience,
+      status: formData.status,
+      wardNumber: formData.wardNumber,
+      wardName: formData.wardName,
+      address: formData.address,
+      image: formData.image,
+    };
+
+    try {
+      let response;
+
+      if (jobSeeker?.id) {
+        // EDITING —> PUT request
+        response = await fetch(`https://rojgar-margadarshan.onrender.com/api/v1/workers/update-worker/${jobSeeker.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend),
+        });
+      } else {
+        // CREATING —> POST request
+        response = await fetch('https://rojgar-margadarshan.onrender.com/api/v1/workers/add-worker', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend),
+        });
+      }
+
+      if (!response.ok) {
+        throw new Error(`Failed to save: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('Saved successfully:', result);
+      alert(`Job seeker ${jobSeeker ? 'updated' : 'saved'} successfully!`);
+      onCancel();
+    } catch (error) {
+      console.error('Error saving job seeker:', error);
+      alert('Failed to save job seeker.');
+    }
   };
+
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setFormData(prev => ({
+        ...prev,
+        image: imageUrl,
+        imageFile: file,
+      }));
+    }
+  };
+
+
+  console.log('Form Data:', formData);
 
   return (
     <Card>
@@ -60,6 +181,7 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Other inputs */}
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
               <Input
@@ -72,18 +194,27 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
             <div className="space-y-2">
               <Label htmlFor="fatherName">Father Name</Label>
               <Input
-                id="fatherName"
-                value={formData.fatherName}
-                onChange={(e) => handleChange('fatherName', e.target.value)}
+                id="fatherOrHusbandName"
+                value={formData.fatherOrHusbandName}
+                onChange={(e) => handleChange('fatherOrHusbandName', e.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="aadharNumber">Aadhar Number</Label>
               <Input
-                id="location"
-                value={formData.location}
-                onChange={(e) => handleChange('location', e.target.value)}
+                id="aadharNumber"
+                value={formData.aadharNumber}
+                onChange={(e) => handleChange('aadharNumber', e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="location">Address</Label>
+              <Input
+                id="address"
+                value={formData.address}
+                onChange={(e) => handleChange('address', e.target.value)}
                 required
               />
             </div>
@@ -122,18 +253,18 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
             <div className="space-y-2">
               <Label htmlFor="workName">Work/Profession</Label>
               <Input
-                id="workName"
-                value={formData.workName}
-                onChange={(e) => handleChange('workName', e.target.value)}
+                id="workCategory"
+                value={formData.workCategory}
+                onChange={(e) => handleChange('workCategory', e.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="experience">Experience</Label>
               <Input
-                id="experience"
-                value={formData.experience}
-                onChange={(e) => handleChange('experience', e.target.value)}
+                id="workExperience"
+                value={formData.workExperience}
+                onChange={(e) => handleChange('workExperience', e.target.value)}
                 placeholder="e.g., 2 years"
                 required
               />
@@ -141,9 +272,9 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
             <div className="space-y-2">
               <Label htmlFor="mobileNumber">Mobile Number</Label>
               <Input
-                id="mobileNumber"
-                value={formData.mobileNumber}
-                onChange={(e) => handleChange('mobileNumber', e.target.value)}
+                id="phone"
+                value={formData.phone}
+                onChange={(e) => handleChange('phone', e.target.value)}
                 required
               />
             </div>
@@ -157,11 +288,29 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
                 required
               >
                 <option value="Available">Available</option>
-                <option value="Booked">Booked</option>
+                <option value="Booked">Unavailable</option>
               </select>
             </div>
+
+            {/* 👇 Image Upload Field */}
+            <div className="space-y-2">
+              <Label htmlFor="image">Image</Label>
+              <Input
+                id="image"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              {formData.image && (
+                <img
+                  src={formData.image}
+                  alt="Preview"
+                  className="mt-2 h-20 w-20 rounded-md object-cover"
+                />
+              )}
+            </div>
           </div>
-          
+
           <div className="flex justify-end space-x-2 pt-4">
             <Button type="button" variant="outline" onClick={onCancel}>
               Cancel
@@ -175,3 +324,4 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
     </Card>
   );
 };
+

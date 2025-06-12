@@ -54,7 +54,7 @@ export const TeamSection = () => {
                 <div className="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
                   <User className="text-blue-600" size={40} />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">{member.name} </h3>
+                <h3 className="text-xl font-semibold text-gray-900">{member.name}  </h3>
                 <p className="text-blue-600 font-medium">{member.position}</p>
               </CardHeader>
               <CardContent className="text-center space-y-3">

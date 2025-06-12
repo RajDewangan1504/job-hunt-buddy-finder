@@ -31,24 +31,24 @@ export const JobSeekerList: React.FC<JobSeekerListProps> = ({
                     <User className="text-blue-600" size={16} />
                     <h3 className="font-semibold text-lg">{jobSeeker.name}</h3>
                   </div>
-                  <p className="text-sm text-gray-600">Father: {jobSeeker.fatherName}</p>
+                  <p className="text-sm text-gray-600">Father/Husband: {jobSeeker.fatherOrHusbandName}</p>
                   <p className="text-sm text-gray-600">Gender: {jobSeeker.gender}</p>
                 </div>
                 
-                <div>
+                <div>  
                   <div className="flex items-center space-x-2 mb-2">
                     <MapPin className="text-green-600" size={16} />
-                    <span className="font-medium">{jobSeeker.location}</span>
+                    <span className="font-medium">{jobSeeker.address}</span>
                   </div>
                   <p className="text-sm text-gray-600">Ward: {jobSeeker.wardNumber} - {jobSeeker.wardName}</p>
-                  <p className="text-sm text-gray-600">Work: {jobSeeker.workName}</p>
-                  <p className="text-sm text-gray-600">Experience: {jobSeeker.experience}</p>
+                  <p className="text-sm text-gray-600">Work: {jobSeeker.workCategory }</p>
+                  <p className="text-sm text-gray-600">Experience: {jobSeeker.workExperience}</p>
                 </div>
                 
                 <div>
                   <div className="flex items-center space-x-2 mb-2">
                     <Phone className="text-purple-600" size={16} />
-                    <span className="font-medium">{jobSeeker.mobileNumber}</span>
+                    <span className="font-medium">{jobSeeker.phone}</span>
                   </div>
                   <div className="mb-2">
                     <Badge 
