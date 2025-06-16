@@ -81,7 +81,7 @@ export const JobSearch = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <Input
+              <Input 
                 placeholder="Search by location, ward name or number..."
                 value={searchLocation}
                 onChange={(e) => setSearchLocation(e.target.value)}

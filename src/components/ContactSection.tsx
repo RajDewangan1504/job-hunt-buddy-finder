@@ -36,25 +36,7 @@ export const ContactSection = () => {
     alert('Thank you for your message! We will get back to you soon.');
   };
 
-  //   const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
 
-  //   const { name, email, phone, message } = formData;
-
-  //   const whatsappNumber = '917805972994'; // Replace with your WhatsApp number (international format, no + or spaces)
-
-  //   const text = `Hi, I'm ${name}.
-  // Email: ${email}
-  // Phone: ${phone}
-  // Message: ${message}`;
-
-  //   const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
-
-  //   window.open(url, '_blank');
-
-  //   // Optionally clear the form
-  //   setFormData({ name: '', email: '', phone: '', message: '' });
-  // };
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
