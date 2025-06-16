@@ -98,22 +98,28 @@ export const JobSearch = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="driver">Driver</SelectItem>
-                <SelectItem value="plumber">Plumber</SelectItem>
-                <SelectItem value="maid">Maid</SelectItem>
-                <SelectItem value="nurse">Nurse</SelectItem>
-                <SelectItem value="carpenter">Carpenter</SelectItem>
-                <SelectItem value="tailor">Tailor</SelectItem>
-                <SelectItem value="electrician">Electrician</SelectItem>
-                <SelectItem value="cook">Cook</SelectItem>
-                <SelectItem value="gardener">Gardener</SelectItem>
-                <SelectItem value="security guard">Security Guard</SelectItem>
-                <SelectItem value="cleaner">Cleaner</SelectItem>
-                <SelectItem value="painter">Painter</SelectItem>
-                <SelectItem value="mechanic">Mechanic</SelectItem>
-                <SelectItem value="welder">Welder</SelectItem>
-                <SelectItem value="mason">Mason</SelectItem>
-                <SelectItem value="delivery boy">Delivery Boy</SelectItem>
+                                <SelectItem value="driver">Driver</SelectItem>
+                                <SelectItem value="plumber">Plumber</SelectItem>
+                                <SelectItem value="maid">Maid</SelectItem>
+                                <SelectItem value="nurse">Nurse</SelectItem>
+                                <SelectItem value="carpenter">Carpenter</SelectItem>
+                                <SelectItem value="tailor">Tailor</SelectItem>
+                                <SelectItem value="electrician">Electrician</SelectItem>
+                                <SelectItem value="cook">Cook</SelectItem>
+                                <SelectItem value="gardener">Gardener</SelectItem>
+                                <SelectItem value="security guard">Security Guard</SelectItem>
+                                <SelectItem value="cleaner">Cleaner</SelectItem>
+                                <SelectItem value="painter">Painter</SelectItem>
+                                <SelectItem value="mechanic">Mechanic</SelectItem>
+                                <SelectItem value="welder">Welder</SelectItem>
+                                <SelectItem value="mason">Mason</SelectItem>
+                                <SelectItem value="delivery boy">Delivery Boy</SelectItem>
+                                <SelectItem value="House keeping">House keeping</SelectItem>
+                                <SelectItem value="Tiles Worker">Tiles Worker</SelectItem>
+                                <SelectItem value="Labour">Labour</SelectItem>
+                                <SelectItem value="Store Keeping">Store Keeping</SelectItem>
+                                <SelectItem value="AC Service">AC Service</SelectItem>
+                                <SelectItem value="Technician">Technician</SelectItem>
               </SelectContent>
             </Select>
 

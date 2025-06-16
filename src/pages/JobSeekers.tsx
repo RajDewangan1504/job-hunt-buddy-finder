@@ -116,6 +116,12 @@ const JobSeekers = () => {
                 <SelectItem value="welder">Welder</SelectItem>
                 <SelectItem value="mason">Mason</SelectItem>
                 <SelectItem value="delivery boy">Delivery Boy</SelectItem>
+                <SelectItem value="House keeping">House keeping</SelectItem>
+                <SelectItem value="Tiles Worker">Tiles Worker</SelectItem>
+                <SelectItem value="Labour">Labour</SelectItem>
+                <SelectItem value="Store Keeping">Store Keeping</SelectItem>
+                <SelectItem value="AC Service">AC Service</SelectItem>
+                <SelectItem value="Technician<">Technician</SelectItem>
               </SelectContent>
             </Select>
           </div>

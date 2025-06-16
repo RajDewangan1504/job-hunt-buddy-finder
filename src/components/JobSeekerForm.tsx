@@ -8,8 +8,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { JobSeeker } from '@/types/jobSeeker';
-import { CloudCog } from 'lucide-react';
+import { CloudCog, Briefcase } from 'lucide-react';
 import { Console } from 'console';
+
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 interface JobSeekerFormProps {
   jobSeeker?: JobSeeker | null;
@@ -58,54 +66,54 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
 
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const dataToSend = {
-    name: formData.name,
-    fatherOrHusbandName: formData.fatherOrHusbandName,
-    gender: formData.gender,
-    aadharNumber: formData.aadharNumber,
-    phone: formData.phone,
-    workCategory: formData.workCategory,
-    workExperience: formData.workExperience,
-    status: formData.status,
-    wardNumber: formData.wardNumber,
-    wardName: formData.wardName,
-    address: formData.address,
-    image: formData.image,
+    const dataToSend = {
+      name: formData.name,
+      fatherOrHusbandName: formData.fatherOrHusbandName,
+      gender: formData.gender,
+      aadharNumber: formData.aadharNumber,
+      phone: formData.phone,
+      workCategory: formData.workCategory,
+      workExperience: formData.workExperience,
+      status: formData.status,
+      wardNumber: formData.wardNumber,
+      wardName: formData.wardName,
+      address: formData.address,
+      image: formData.image,
+    };
+
+    try {
+      let response;
+
+      if (jobSeeker?.id) {
+        response = await fetch(`https://rojgar-margadarshan.onrender.com/api/v1/workers/update-worker/${jobSeeker.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dataToSend),
+        });
+      } else {
+        response = await fetch('https://rojgar-margadarshan.onrender.com/api/v1/workers/add-worker', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dataToSend),
+        });
+      }
+
+      const result = await response.json();
+      console.log('API response:', result);
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Unknown error');
+      }
+
+      alert(`Job seeker ${jobSeeker ? 'updated' : 'saved'} successfully!`);
+      onCancel();
+    } catch (error: any) {
+      console.error('Error saving job seeker:', error);
+      alert(`Failed to save job seeker: ${error.message}`);
+    }
   };
-
-  try {
-    let response;
-
-    if (jobSeeker?.id) {
-      response = await fetch(`https://rojgar-margadarshan.onrender.com/api/v1/workers/update-worker/${jobSeeker.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dataToSend),
-      });
-    } else {
-      response = await fetch('https://rojgar-margadarshan.onrender.com/api/v1/workers/add-worker', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dataToSend),
-      });
-    }
-
-    const result = await response.json();
-    console.log('API response:', result);
-
-    if (!response.ok) {
-      throw new Error(result.message || 'Unknown error');
-    }
-
-    alert(`Job seeker ${jobSeeker ? 'updated' : 'saved'} successfully!`);
-    onCancel();
-  } catch (error: any) {
-    console.error('Error saving job seeker:', error);
-    alert(`Failed to save job seeker: ${error.message}`);
-  }
-};
 
 
 
@@ -205,7 +213,7 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
                 <option value="Other">Other</option>
               </select>
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="workName">Work/Profession</Label>
               <Input
                 id="workCategory"
@@ -213,6 +221,45 @@ export const JobSeekerForm: React.FC<JobSeekerFormProps> = ({ jobSeeker, onSave,
                 onChange={(e) => handleChange('workCategory', e.target.value)}
                 required
               />
+            </div> */}
+
+            <div className="space-y-2">
+              <Label htmlFor="workCategory">Work/Profession</Label>
+              <Select
+                value={formData.workCategory}
+                onValueChange={(value) => handleChange('workCategory', value)}
+              >
+                <SelectTrigger id="workCategory">
+                  <div className="flex items-center">
+                    <Briefcase className="mr-2 text-gray-400" size={20} />
+                    <SelectValue placeholder="Select work category..." />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="driver">Driver</SelectItem>
+                  <SelectItem value="plumber">Plumber</SelectItem>
+                  <SelectItem value="maid">Maid</SelectItem>
+                  <SelectItem value="nurse">Nurse</SelectItem>
+                  <SelectItem value="carpenter">Carpenter</SelectItem>
+                  <SelectItem value="tailor">Tailor</SelectItem>
+                  <SelectItem value="electrician">Electrician</SelectItem>
+                  <SelectItem value="cook">Cook</SelectItem>
+                  <SelectItem value="gardener">Gardener</SelectItem>
+                  <SelectItem value="security guard">Security Guard</SelectItem>
+                  <SelectItem value="cleaner">Cleaner</SelectItem>
+                  <SelectItem value="painter">Painter</SelectItem>
+                  <SelectItem value="mechanic">Mechanic</SelectItem>
+                  <SelectItem value="welder">Welder</SelectItem>
+                  <SelectItem value="mason">Mason</SelectItem>
+                  <SelectItem value="delivery boy">Delivery Boy</SelectItem>
+                  <SelectItem value="house keeping">House Keeping</SelectItem>
+                  <SelectItem value="tiles worker">Tiles Worker</SelectItem>
+                  <SelectItem value="labour">Labour</SelectItem>
+                  <SelectItem value="store keeping">Store Keeping</SelectItem>
+                  <SelectItem value="ac service">AC Service</SelectItem>
+                  <SelectItem value="technician">Technician</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="experience">Experience</Label>
