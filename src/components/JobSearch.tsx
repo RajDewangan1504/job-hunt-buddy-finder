@@ -17,34 +17,34 @@ export const JobSearch = () => {
 
 
   useEffect(() => {
-  const fetchJobSeekers = async () => {
-    try {
-      const res = await axios.get('https://rojgar-margadarshan.onrender.com/api/v1/workers/get-workers');
-      const formatted = res.data.Workers.map((worker: any) => ({
-        id: worker._id,
-        name: worker.name,
-        fatherOrHusbandName: worker.fatherOrHusbandName,
-        gender: worker.gender,
-        aadharNumber: worker.aadharNumber,
-        phone: worker.phone,
-        workCategory: worker.workCategory,
-        workExperience: worker.workExperience,
-        status: worker.status,
-        wardNumber: worker.wardNumber,
-        wardName: worker.wardName,
-        address: worker.address,
-        image: worker.image,
-      }));
+    const fetchJobSeekers = async () => {
+      try {
+        const res = await axios.get('https://rojgar-margadarshan.onrender.com/api/v1/workers/get-workers');
+        const formatted = res.data.Workers.map((worker: any) => ({
+          id: worker._id,
+          name: worker.name,
+          fatherOrHusbandName: worker.fatherOrHusbandName,
+          gender: worker.gender,
+          aadharNumber: worker.aadharNumber,
+          phone: worker.phone,
+          workCategory: worker.workCategory,
+          workExperience: worker.workExperience,
+          status: worker.status,
+          wardNumber: worker.wardNumber,
+          wardName: worker.wardName,
+          address: worker.address,
+          image: worker.image,
+        }));
 
-      setJobSeekers(formatted);
-      setFilteredJobSeekers(formatted);
-    } catch (error) {
-      console.error('Error fetching job seekers:', error);
-    }
-  };
+        setJobSeekers(formatted);
+        setFilteredJobSeekers(formatted);
+      } catch (error) {
+        console.error('Error fetching job seekers:', error);
+      }
+    };
 
-  fetchJobSeekers();
-}, []);
+    fetchJobSeekers();
+  }, []);
 
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export const JobSearch = () => {
     if (searchLocation) {
       filtered = filtered.filter(seeker =>
         seeker.address.toLowerCase().includes(searchLocation.toLowerCase()) ||
-        seeker.wardName.toLowerCase().includes(searchLocation.toLowerCase()) 
+        seeker.wardName.toLowerCase().includes(searchLocation.toLowerCase())
         // seeker.wardNumber.toLowerCase().includes(searchLocation.toLowerCase())
       );
     }
@@ -81,14 +81,14 @@ export const JobSearch = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
               <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <Input 
+              <Input
                 placeholder="Search by location, ward name or number..."
                 value={searchLocation}
                 onChange={(e) => setSearchLocation(e.target.value)}
                 className="pl-10 h-12"
               />
             </div>
-            
+
             <Select value={searchWork} onValueChange={setSearchWork}>
               <SelectTrigger className="h-12">
                 <div className="flex items-center">
@@ -98,28 +98,28 @@ export const JobSearch = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                                <SelectItem value="driver">Driver</SelectItem>
-                                <SelectItem value="plumber">Plumber</SelectItem>
-                                <SelectItem value="maid">Maid</SelectItem>
-                                <SelectItem value="nurse">Nurse</SelectItem>
-                                <SelectItem value="carpenter">Carpenter</SelectItem>
-                                <SelectItem value="tailor">Tailor</SelectItem>
-                                <SelectItem value="electrician">Electrician</SelectItem>
-                                <SelectItem value="cook">Cook</SelectItem>
-                                <SelectItem value="gardener">Gardener</SelectItem>
-                                <SelectItem value="security guard">Security Guard</SelectItem>
-                                <SelectItem value="cleaner">Cleaner</SelectItem>
-                                <SelectItem value="painter">Painter</SelectItem>
-                                <SelectItem value="mechanic">Mechanic</SelectItem>
-                                <SelectItem value="welder">Welder</SelectItem>
-                                <SelectItem value="mason">Mason</SelectItem>
-                                <SelectItem value="delivery boy">Delivery Boy</SelectItem>
-                                <SelectItem value="House keeping">House keeping</SelectItem>
-                                <SelectItem value="Tiles Worker">Tiles Worker</SelectItem>
-                                <SelectItem value="Labour">Labour</SelectItem>
-                                <SelectItem value="Store Keeping">Store Keeping</SelectItem>
-                                <SelectItem value="AC Service">AC Service</SelectItem>
-                                <SelectItem value="Technician">Technician</SelectItem>
+                <SelectItem value="driver">Driver</SelectItem>
+                <SelectItem value="plumber">Plumber</SelectItem>
+                <SelectItem value="maid">Maid</SelectItem>
+                <SelectItem value="nurse">Nurse</SelectItem>
+                <SelectItem value="carpenter">Carpenter</SelectItem>
+                <SelectItem value="tailor">Tailor</SelectItem>
+                <SelectItem value="electrician">Electrician</SelectItem>
+                <SelectItem value="cook">Cook</SelectItem>
+                <SelectItem value="gardener">Gardener</SelectItem>
+                <SelectItem value="security guard">Security Guard</SelectItem>
+                <SelectItem value="cleaner">Cleaner</SelectItem>
+                <SelectItem value="painter">Painter</SelectItem>
+                <SelectItem value="mechanic">Mechanic</SelectItem>
+                <SelectItem value="welder">Welder</SelectItem>
+                <SelectItem value="mason">Mason</SelectItem>
+                <SelectItem value="delivery boy">Delivery Boy</SelectItem>
+                <SelectItem value="House keeping">House keeping</SelectItem>
+                <SelectItem value="Tiles Worker">Tiles Worker</SelectItem>
+                <SelectItem value="Labour">Labour</SelectItem>
+                <SelectItem value="Store Keeping">Store Keeping</SelectItem>
+                <SelectItem value="AC Service">AC Service</SelectItem>
+                <SelectItem value="Technician">Technician</SelectItem>
               </SelectContent>
             </Select>
 
@@ -146,7 +146,7 @@ export const JobSearch = () => {
         {jobSeekers.length > 6 && (
           <div className="text-center mt-8">
             <Button onClick={() => window.location.href = '/job-seekers'} variant="outline" size="lg">
-              View All {jobSeekers.length } Workers
+              View All {jobSeekers.length} Workers
             </Button>
           </div>
         )}
