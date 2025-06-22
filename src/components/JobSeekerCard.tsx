@@ -25,13 +25,13 @@ export const JobSeekerCard: React.FC<JobSeekerCardProps> = ({ jobSeeker }) => {
             {jobSeeker.status}
           </Badge>
         </div>
-        <p className="text-gray-600 text-sm">Father: {jobSeeker.fatherName}</p>
+        <p className="text-gray-600 text-sm">Father/Husband: {jobSeeker.fatherOrHusbandName}</p>
       </CardHeader>
 
       <CardContent className="space-y-3">
         <div className="flex items-center text-gray-600 text-sm">
           <MapPin size={14} className="mr-2" />
-          <span>{jobSeeker.location}</span>
+          <span>{jobSeeker.address}</span>
         </div>
 
         <div className="text-sm text-gray-600">
@@ -46,16 +46,16 @@ export const JobSeekerCard: React.FC<JobSeekerCardProps> = ({ jobSeeker }) => {
 
         <div className="flex items-center text-gray-700">
           <Briefcase size={14} className="mr-2 text-blue-600" />
-          <span className="font-medium">{jobSeeker.workName}</span>
+          <span className="font-medium">{jobSeeker.workCategory}</span>
         </div>
 
         <div className="text-sm text-gray-600">
-          <span className="font-medium">Experience:</span> {jobSeeker.experience}
+          <span className="font-medium">Experience:</span> {jobSeeker.workExperience}
         </div>
 
         <div className="flex items-center text-gray-700 pt-2 border-t">
           <Phone size={14} className="mr-2 text-green-600" />
-          <span className="font-medium">{jobSeeker.mobileNumber}</span>
+          <span className="font-medium">{jobSeeker.phone}</span>
         </div>
       </CardContent>
     </Card>

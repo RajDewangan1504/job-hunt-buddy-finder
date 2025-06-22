@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, MapPin, Briefcase } from 'lucide-react';
 import { JobSeekerCard } from '@/components/JobSeekerCard';
 import { JobSeeker } from '@/types/jobSeeker';
+import axios from 'axios';
 
 export const JobSearch = () => {
   const [jobSeekers, setJobSeekers] = useState<JobSeeker[]>([]);
@@ -13,15 +14,38 @@ export const JobSearch = () => {
   const [searchWork, setSearchWork] = useState('');
   const [filteredJobSeekers, setFilteredJobSeekers] = useState<JobSeeker[]>([]);
 
+
+
   useEffect(() => {
-    // Load job seekers from localStorage
-    const savedJobSeekers = localStorage.getItem('jobSeekers');
-    if (savedJobSeekers) {
-      const parsedJobSeekers = JSON.parse(savedJobSeekers);
-      setJobSeekers(parsedJobSeekers);
-      setFilteredJobSeekers(parsedJobSeekers.slice(0, 6)); // Show only first 6 on home page
-    }
+    const fetchJobSeekers = async () => {
+      try {
+        const res = await axios.get('https://rojgar-margadarshan.onrender.com/api/v1/workers/get-workers');
+        const formatted = res.data.Workers.map((worker: any) => ({
+          id: worker._id,
+          name: worker.name,
+          fatherOrHusbandName: worker.fatherOrHusbandName,
+          gender: worker.gender,
+          aadharNumber: worker.aadharNumber,
+          phone: worker.phone,
+          workCategory: worker.workCategory,
+          workExperience: worker.workExperience,
+          status: worker.status,
+          wardNumber: worker.wardNumber,
+          wardName: worker.wardName,
+          address: worker.address,
+          image: worker.image,
+        }));
+
+        setJobSeekers(formatted);
+        setFilteredJobSeekers(formatted);
+      } catch (error) {
+        console.error('Error fetching job seekers:', error);
+      }
+    };
+
+    fetchJobSeekers();
   }, []);
+
 
   useEffect(() => {
     // Filter job seekers by location/ward and work category
@@ -29,15 +53,15 @@ export const JobSearch = () => {
 
     if (searchLocation) {
       filtered = filtered.filter(seeker =>
-        seeker.location.toLowerCase().includes(searchLocation.toLowerCase()) ||
-        seeker.wardName.toLowerCase().includes(searchLocation.toLowerCase()) ||
-        seeker.wardNumber.toLowerCase().includes(searchLocation.toLowerCase())
+        seeker.address.toLowerCase().includes(searchLocation.toLowerCase()) ||
+        seeker.wardName.toLowerCase().includes(searchLocation.toLowerCase())
+        // seeker.wardNumber.toLowerCase().includes(searchLocation.toLowerCase())
       );
     }
 
     if (searchWork && searchWork !== 'all') {
       filtered = filtered.filter(seeker =>
-        seeker.workName.toLowerCase().includes(searchWork.toLowerCase())
+        seeker.workCategory.toLowerCase().includes(searchWork.toLowerCase())
       );
     }
 
@@ -64,7 +88,7 @@ export const JobSearch = () => {
                 className="pl-10 h-12"
               />
             </div>
-            
+
             <Select value={searchWork} onValueChange={setSearchWork}>
               <SelectTrigger className="h-12">
                 <div className="flex items-center">
@@ -90,6 +114,12 @@ export const JobSearch = () => {
                 <SelectItem value="welder">Welder</SelectItem>
                 <SelectItem value="mason">Mason</SelectItem>
                 <SelectItem value="delivery boy">Delivery Boy</SelectItem>
+                <SelectItem value="House keeping">House keeping</SelectItem>
+                <SelectItem value="Tiles Worker">Tiles Worker</SelectItem>
+                <SelectItem value="Labour">Labour</SelectItem>
+                <SelectItem value="Store Keeping">Store Keeping</SelectItem>
+                <SelectItem value="AC Service">AC Service</SelectItem>
+                <SelectItem value="Technician">Technician</SelectItem>
               </SelectContent>
             </Select>
 

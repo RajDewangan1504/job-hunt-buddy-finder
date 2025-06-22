@@ -36,6 +36,9 @@ export const ContactSection = () => {
     alert('Thank you for your message! We will get back to you soon.');
   };
 
+
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,

@@ -7,6 +7,7 @@ import { JobSeekerList } from '@/components/JobSeekerList';
 import { JobSeeker } from '@/types/jobSeeker';
 import { useNavigate } from 'react-router-dom';
 import { Plus, LogOut } from 'lucide-react';
+import axios from 'axios';
 
 const AdminPanel = () => {
   const [jobSeekers, setJobSeekers] = useState<JobSeeker[]>([]);
@@ -34,31 +35,40 @@ const AdminPanel = () => {
     navigate('/admin-login');
   };
 
-  const handleSaveJobSeeker = (jobSeekerData: Omit<JobSeeker, 'id' | 'createdAt'>) => {
-    let updatedJobSeekers;
-    
-    if (editingJobSeeker) {
-      // Update existing job seeker
-      updatedJobSeekers = jobSeekers.map(js => 
-        js.id === editingJobSeeker.id 
-          ? { ...jobSeekerData, id: editingJobSeeker.id, createdAt: editingJobSeeker.createdAt }
-          : js
-      );
-    } else {
-      // Add new job seeker
-      const newJobSeeker: JobSeeker = {
-        ...jobSeekerData,
-        id: Date.now().toString(),
-        createdAt: new Date().toISOString(),
-      };
-      updatedJobSeekers = [...jobSeekers, newJobSeeker];
-    }
+  const handleSaveJobSeeker = async (jobSeekerData: Omit<JobSeeker, 'id' | 'createdAt'>) => {
+    try {
+      if (editingJobSeeker) {
+        const updatedJobSeeker: JobSeeker = {
+          ...editingJobSeeker,
+          ...jobSeekerData,
+        };
 
-    setJobSeekers(updatedJobSeekers);
-    localStorage.setItem('jobSeekers', JSON.stringify(updatedJobSeekers));
-    setShowForm(false);
-    setEditingJobSeeker(null);
+        await axios.put(
+          `https://rojgar-margadarshan.onrender.com/api/v1/workers/update-worker/${editingJobSeeker.id}`,
+          updatedJobSeeker,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        // Update UI
+        const updatedJobSeekers: JobSeeker[] = jobSeekers.map(js =>
+          js.id === editingJobSeeker.id ? updatedJobSeeker : js
+        );
+
+        setJobSeekers(updatedJobSeekers);
+        setShowForm(false);
+        setEditingJobSeeker(null);
+      }
+    } catch (error: any) {
+      console.error('Failed to update job seeker:', error.response?.data || error.message);
+      alert(`Failed to update job seeker: ${error.response?.data?.message || error.message}`);
+    }
   };
+
+
 
   const handleEditJobSeeker = (jobSeeker: JobSeeker) => {
     setEditingJobSeeker(jobSeeker);
@@ -69,15 +79,53 @@ const AdminPanel = () => {
     const updatedJobSeekers = jobSeekers.map(js =>
       js.id === id ? { ...js, status } : js
     );
-    setJobSeekers(updatedJobSeekers);
+    // setJobSeekers(updatedJobSeekers);
     localStorage.setItem('jobSeekers', JSON.stringify(updatedJobSeekers));
+  };
+  const handleDeleteJobSeeker = async (id: string) => {
+    try {
+      await axios.delete(`https://rojgar-margadarshan.onrender.com/api/v1/workers/delete-worker/${id}`);
+
+      const updatedJobSeekers = jobSeekers.filter(js => js.id !== id);
+      setJobSeekers(updatedJobSeekers);
+      alert('Job seeker deleted successfully.');
+    } catch (error: any) {
+      console.error('Failed to delete job seeker:', error.response?.data || error.message);
+      alert(`Failed to delete job seeker: ${error.response?.data?.message || error.message}`);
+    }
   };
 
-  const handleDeleteJobSeeker = (id: string) => {
-    const updatedJobSeekers = jobSeekers.filter(js => js.id !== id);
-    setJobSeekers(updatedJobSeekers);
-    localStorage.setItem('jobSeekers', JSON.stringify(updatedJobSeekers));
-  };
+
+  //  const [jobSeekers, setJobSeekers] = useState<JobSeeker[]>([]);
+
+  useEffect(() => {
+    const fetchJobSeekers = async () => {
+      try {
+        const res = await axios.get('https://rojgar-margadarshan.onrender.com/api/v1/workers/get-workers');
+        const formatted = res.data.Workers.map((worker: any) => ({
+          id: worker._id,
+          name: worker.name,
+          fatherOrHusbandName: worker.fatherOrHusbandName,
+          gender: worker.gender,
+          aadharNumber: worker.aadharNumber,
+          phone: worker.phone,
+          workCategory: worker.workCategory,
+          workExperience: worker.workExperience,
+          status: worker.status,
+          wardNumber: worker.wardNumber,
+          wardName: worker.wardName,
+          address: worker.address,
+          image: worker.image,
+        }));
+        setJobSeekers(formatted);
+        // console.log('Job seekers fetched:', formatted);
+      } catch (error) {
+        console.error('Failed to fetch job seekers:', error);
+      }
+    };
+
+    fetchJobSeekers();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
